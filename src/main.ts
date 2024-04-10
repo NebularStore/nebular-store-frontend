@@ -17,7 +17,9 @@ import Home from "./view/Home.vue";
 import {PluginManager} from "./plugins/PluginManager.ts";
 import {RevealMdPlugin} from "./plugins/RevealMdPlugin.ts";
 
-PluginManager.instance.registerPlugin(new RevealMdPlugin());
+if (import.meta.env.VITE_ENABLE_REVEAL_MD === "true") {
+    PluginManager.instance.registerPlugin(new RevealMdPlugin());
+}
 
 library.add(faMagnifyingGlass);
 library.add(faFileArrowUp);
@@ -36,6 +38,5 @@ const router = createRouter({
     history: createMemoryHistory(),
     routes
 })
-
 createApp(App).component("font-awesome-icon", FontAwesomeIcon).use(router).mount('#app')
 

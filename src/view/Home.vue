@@ -31,6 +31,7 @@ function loadRoot() {
     root.value.setChildren(entries.map(entry => new RepositoryNode(entry.name, entry.is_file, root.value, 0)))
   })
 }
+
 </script>
 
 <template>
