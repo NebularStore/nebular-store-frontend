@@ -6,7 +6,7 @@ export class RevealMdPlugin implements AppPlugin {
     }
 
     static openInRevealMd(path: string) {
-        window.open("http://localhost:1948/" + path, "_blank")?.focus();
+        window.open(import.meta.env.VITE_REVEAL_MD_URL + path, "_blank")?.focus();
     }
 
     constructor() {

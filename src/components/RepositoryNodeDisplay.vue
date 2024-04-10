@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {RepositoryNode} from "../types/RepositoryNode.ts";
 import {ref} from "vue";
-import type {RepositoryEntry} from "../types/RepositoryEntry.ts";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {createNewDir, uploadNewFile} from "../utils/repositoryUtils.ts";
+import {createNewDir, deleteEntry, fetchStructure, getServeURL, uploadNewFile} from "../utils/apiUtils.ts";
 import TransparentButton from "./TransparentButton.vue";
 import {PluginManager} from "../plugins/PluginManager.ts";
+import {openFileSelection} from "../utils/uiUtils.ts";
 
 interface Props {
   node: RepositoryNode,
@@ -21,16 +21,21 @@ const emit = defineEmits<{
 const isExpanded = ref(props.initiallyExpanded);
 
 function createDir() {
-  createNewDir(props.node.getPath(), () => {
+  const name = prompt("Enter a name fo the new directory:")
+  if (!name) return;
+
+  createNewDir(props.node.getPath(), name).then((_) => {
     isExpanded.value = true;
     fetchChildren();
   })
 }
 
 function uploadFile() {
-  uploadNewFile(props.node.getPath(), () => {
-    isExpanded.value = true;
-    fetchChildren();
+  openFileSelection(files => {
+    uploadNewFile(props.node.getPath(), files[0]).then(() => {
+      isExpanded.value = true;
+      fetchChildren();
+    })
   });
 }
 
@@ -38,18 +43,12 @@ function remove() {
   const result = confirm("Are you sure you want to delete the file/directory?");
   if (!result) return;
 
-  const path = "http://localhost:8080/files/repository/" + (props.node.is_file ? "file" : "dir") + "/" + props.node.getPath()
-  fetch(path, {
-    method: "DELETE"
-  }).then(() => {
-    emit("changedContent")
-  })
+  deleteEntry(props.node.is_file, props.node.getPath()).then(_ => emit('changedContent'))
 }
 
 async function fetchChildren() {
   if (props.node.is_file || !isExpanded.value) return;
-  const path = "http://localhost:8080/files/structure/" + (props.node.getPath())
-  const entries: RepositoryEntry[] = await (await fetch(path)).json()
+  const entries = await fetchStructure(props.node.getPath());
   props.node.setChildren(entries.map(entry => new RepositoryNode(entry.name, entry.is_file, props.node, props.node.depth + 1)))
 }
 
@@ -69,7 +68,7 @@ function clicked() {
     if (pluginHook) {
       pluginHook(props.node.getPath())
     } else {
-      window.open("http://localhost:8080/files/serve/" + props.node.getPath(), "_blank")?.focus();
+      window.open(getServeURL(props.node.getPath()), "_blank")?.focus();
     }
   } else {
     changeExpanded();

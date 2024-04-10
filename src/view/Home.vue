@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import SearchBar from "../components/SearchBar.vue";
-import {RepositoryEntry} from "../types/RepositoryEntry.ts";
 import {RepositoryNode} from "../types/RepositoryNode.ts";
 import {onMounted, ref} from "vue";
 import RepositoryNodeDisplay from "../components/RepositoryNodeDisplay.vue";
-import {createNewDir, uploadNewFile} from "../utils/repositoryUtils.ts";
+import {createNewDir, fetchStructure, uploadNewFile} from "../utils/apiUtils.ts";
 import TransparentButton from "../components/TransparentButton.vue";
+import {openFileSelection} from "../utils/uiUtils.ts";
 
 const root = ref(new RepositoryNode("root", false, undefined, -1));
 
@@ -14,17 +14,22 @@ onMounted(loadRoot);
 onMounted(() => loadRoot())
 
 function createDir() {
-  createNewDir("", loadRoot);
+  const name = prompt("Enter a name fo the new directory:")
+  if (!name) return;
+  createNewDir("", name).then(loadRoot);
 }
 
 function uploadFile() {
-  uploadNewFile(undefined, loadRoot);
+  openFileSelection(files => {
+    uploadNewFile("", files[0]).then(loadRoot)
+  });
 }
 
-async function loadRoot() {
+function loadRoot() {
   root.value.clearChildren();
-  let entries: RepositoryEntry[] = await (await fetch("http://localhost:8080/files/structure/")).json()
-  root.value.setChildren(entries.map(entry => new RepositoryNode(entry.name, entry.is_file, root.value, 0)))
+  fetchStructure("").then(entries => {
+    root.value.setChildren(entries.map(entry => new RepositoryNode(entry.name, entry.is_file, root.value, 0)))
+  })
 }
 </script>
 

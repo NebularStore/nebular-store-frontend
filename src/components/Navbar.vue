@@ -1,21 +1,19 @@
 <script setup lang="ts">
 
 import {ref} from "vue";
+import {getCompanyName, getLogoURL} from "../utils/apiUtils.ts";
 
 const title = ref("...");
 
-fetch("http://localhost:8080/theme/company_name", {
-  method: "GET"
-}).then(async value => {
-  title.value = await value.text();
-})
+const logoPath = getLogoURL();
 
+getCompanyName().then(value => title.value = value);
 </script>
 
 <template>
   <nav>
-    <img src="http://localhost:8080/theme/icon" alt="company logo">
-    <h1>{{title}}</h1>
+    <img :src="logoPath" alt="company logo">
+    <h1>{{ title }}</h1>
   </nav>
 </template>
 
