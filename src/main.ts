@@ -14,6 +14,10 @@ import {
     faX
 } from "@fortawesome/free-solid-svg-icons";
 import Home from "./view/Home.vue";
+import {PluginManager} from "./plugins/PluginManager.ts";
+import {RevealMdPlugin} from "./plugins/RevealMdPlugin.ts";
+
+PluginManager.instance.registerPlugin(new RevealMdPlugin());
 
 library.add(faMagnifyingGlass);
 library.add(faFileArrowUp);

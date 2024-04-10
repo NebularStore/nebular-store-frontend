@@ -5,6 +5,7 @@ import type {RepositoryEntry} from "../types/RepositoryEntry.ts";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {createNewDir, uploadNewFile} from "../utils/repositoryUtils.ts";
 import TransparentButton from "./TransparentButton.vue";
+import {PluginManager} from "../plugins/PluginManager.ts";
 
 interface Props {
   node: RepositoryNode,
@@ -63,10 +64,12 @@ function changeExpanded() {
 
 function clicked() {
   if (props.node.is_file) {
-    if (props.node.name.endsWith(".md")) {
-      window.open("http://localhost:1948/" + props.node.getPath(), "_blank")?.focus();
+    const pluginHook = PluginManager.instance.getDownloadHook(props.node.getPath());
+
+    if (pluginHook) {
+      pluginHook(props.node.getPath())
     } else {
-    window.open("http://localhost:8080/files/serve/" + props.node.getPath(), "_blank")?.focus();
+      window.open("http://localhost:8080/files/serve/" + props.node.getPath(), "_blank")?.focus();
     }
   } else {
     changeExpanded();
