@@ -1,13 +1,19 @@
 <script setup lang="ts">
+import IconButton from "./TransparentButton.vue";
+import {ref} from "vue";
 
-import IconButton from "./IconButton.vue";
+const content = ref("");
+
+const emit = defineEmits<{
+  (e: 'searched', searchString: string): void
+}>();
 </script>
 
 <template>
   <div id="search-bar-container">
-    <input type="text" placeholder="Enter search text:">
+    <input type="text" placeholder="Enter search text:" v-model="content">
 
-    <icon-button id="search-button">
+    <icon-button id="search-button" @click="emit('searched', content)">
       <font-awesome-icon :icon="['fas', 'magnifying-glass']"
                          style="color: #999; height: 100%"/>
     </icon-button>

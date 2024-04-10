@@ -3,11 +3,12 @@ import {RepositoryNode} from "../types/RepositoryNode.ts";
 import {computed, ref} from "vue";
 import type {RepositoryEntry} from "../types/RepositoryEntry.ts";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import IconButton from "./IconButton.vue";
 import {createNewDir, uploadNewFile} from "../utils/repositoryUtils.ts";
+import TransparentButton from "./TransparentButton.vue";
 
 interface Props {
-  node: RepositoryNode
+  node: RepositoryNode,
+  initiallyExpanded?: boolean,
 }
 
 const props = defineProps<Props>();
@@ -16,7 +17,7 @@ const emit = defineEmits<{
   (e: 'changedContent'): void
 }>()
 const isRoot = computed(() => props.node.parent == undefined);
-const isExpanded = ref(isRoot.value);
+const isExpanded = ref(props.initiallyExpanded);
 
 function createDir() {
   createNewDir(props.node.getPath(), () => {
@@ -78,27 +79,27 @@ function clicked() {
   <div id="parent" v-if="!isRoot" :style="{'padding-left': 24 * props.node.depth + 'px'}">
     <div id="leading">
       <font-awesome-icon :icon="['fas', 'file']" style="color: #999; width: 16px" v-if="props.node.is_file"/>
-      <icon-button v-else style="width: 16px" @click="changeExpanded">
+      <transparent-button v-else style="width: 16px" @click="changeExpanded">
         <font-awesome-icon :icon="['fas', 'chevron-down']" style="color: #999" v-if="isExpanded"/>
         <font-awesome-icon :icon="['fas', 'chevron-up']" style="color: #999" v-else/>
-      </icon-button>
+      </transparent-button>
       <p id="name" @click="clicked">{{ props.node.name }}</p>
     </div>
     <div id="trailing">
       <div id="dir-buttons" v-if="!props.node.is_file">
-        <icon-button class="node-button" @click="createDir">
+        <transparent-button class="node-button" @click="createDir">
           <font-awesome-icon :icon="['fas', 'folder-plus']" style="color: #999; height: 100%"/>
-        </icon-button>
-        <icon-button class="node-button" @click="uploadFile">
+        </transparent-button>
+        <transparent-button class="node-button" @click="uploadFile">
           <font-awesome-icon :icon="['fas', 'file-arrow-up']" style="color: #999; height: 100%"/>
-        </icon-button>
-        <icon-button class="node-button" @click="fetchChildren">
+        </transparent-button>
+        <transparent-button class="node-button" @click="fetchChildren">
           <font-awesome-icon :icon="['fas', 'rotate-right']" style="color: #999; height: 100%"/>
-        </icon-button>
+        </transparent-button>
       </div>
-      <icon-button class="node-button" @click="remove">
+      <transparent-button class="node-button" @click="remove">
         <font-awesome-icon :icon="['fas', 'x']" style="color: #999; height: 100%"/>
-      </icon-button>
+      </transparent-button>
     </div>
   </div>
   <RepositoryNodeDisplay v-for="node in props.node.children" :node="node" @changed-content="fetchChildren"/>

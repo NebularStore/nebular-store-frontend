@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import SearchBar from "../components/SearchBar.vue";
-import IconButton from "../components/IconButton.vue";
 import {RepositoryEntry} from "../types/RepositoryEntry.ts";
 import {RepositoryNode} from "../types/RepositoryNode.ts";
 import {onMounted, ref} from "vue";
 import RepositoryNodeDisplay from "../components/RepositoryNodeDisplay.vue";
 import {createNewDir, uploadNewFile} from "../utils/repositoryUtils.ts";
+import TransparentButton from "../components/TransparentButton.vue";
 
 const root = ref(new RepositoryNode("root", false, undefined, -1));
 
@@ -32,18 +32,18 @@ async function loadRoot() {
   <div id="home">
     <div id="top-bar">
       <search-bar/>
-      <icon-button @click="createDir">
+      <transparent-button @click="createDir">
         <font-awesome-icon class="searchbar-icon" :icon="['fas', 'folder-plus']" style="height: 100%; color: #999;"/>
-      </icon-button>
-      <icon-button @click="uploadFile">
+      </transparent-button>
+      <transparent-button @click="uploadFile">
         <font-awesome-icon class="searchbar-icon" :icon="['fas', 'file-arrow-up']" style="height: 100%; color: #999;"/>
-      </icon-button>
-      <icon-button @click="loadRoot">
+      </transparent-button>
+      <transparent-button @click="loadRoot">
         <font-awesome-icon class="searchbar-icon" :icon="['fas', 'rotate-right']" style="height: 100%; color: #999"/>
-      </icon-button>
+      </transparent-button>
     </div>
     <div id="repository">
-      <RepositoryNodeDisplay :node="root"/>
+      <RepositoryNodeDisplay :node="root" :initially-expanded="true"/>
     </div>
   </div>
 </template>
