@@ -2,7 +2,27 @@ import {createApp} from 'vue'
 import './css/main.css'
 import App from './App.vue'
 import {createMemoryHistory, createRouter} from "vue-router";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome"
+import {library} from "@fortawesome/fontawesome-svg-core";
+import {
+    faMagnifyingGlass,
+    faFileArrowUp,
+    faFolderPlus,
+    faRotateRight,
+    faChevronUp,
+    faFile, faChevronDown,
+    faX
+} from "@fortawesome/free-solid-svg-icons";
 import Home from "./view/Home.vue";
+
+library.add(faMagnifyingGlass);
+library.add(faFileArrowUp);
+library.add(faFolderPlus);
+library.add(faRotateRight);
+library.add(faChevronUp);
+library.add(faChevronDown);
+library.add(faX);
+library.add(faFile);
 
 const routes = [
     {path: "/", component: Home}
@@ -13,4 +33,4 @@ const router = createRouter({
     routes
 })
 
-createApp(App).use(router).mount('#app')
+createApp(App).component("font-awesome-icon", FontAwesomeIcon).use(router).mount('#app')

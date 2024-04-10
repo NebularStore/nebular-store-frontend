@@ -3,11 +3,26 @@ import Navbar from "./components/Navbar.vue";
 </script>
 
 <template>
-  <Navbar/>
-  <main>
-    <router-view/>
-  </main>
+  <div>
+    <Navbar/>
+    <main>
+      <router-view/>
+    </main>
+  </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+div{
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  main {
+    width: 100%;
+
+    flex: 1;
+  }
+}
 </style>
