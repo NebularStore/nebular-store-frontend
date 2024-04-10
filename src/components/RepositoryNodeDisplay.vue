@@ -76,7 +76,7 @@ function clicked() {
 </script>
 
 <template>
-  <div id="parent" v-if="!hideName" :style="{'padding-left': 24 * props.node.depth + 'px'}">
+  <div id="heading" v-if="!hideName" :style="{'padding-left': 24 * props.node.depth + 'px'}">
     <div id="leading">
       <font-awesome-icon :icon="['fas', 'file']" style="color: #999; width: 16px" v-if="props.node.is_file"/>
       <transparent-button v-else style="width: 16px" @click="changeExpanded">
@@ -86,7 +86,7 @@ function clicked() {
       <p id="name" @click="clicked">{{ props.node.name }}</p>
     </div>
     <div id="trailing">
-      <div id="dir-buttons" v-if="!props.node.is_file">
+      <template id="dir-buttons" v-if="!props.node.is_file">
         <transparent-button class="node-button" @click="createDir">
           <font-awesome-icon :icon="['fas', 'folder-plus']" style="color: #999; height: 100%"/>
         </transparent-button>
@@ -96,7 +96,7 @@ function clicked() {
         <transparent-button class="node-button" @click="fetchChildren">
           <font-awesome-icon :icon="['fas', 'rotate-right']" style="color: #999; height: 100%"/>
         </transparent-button>
-      </div>
+      </template>
       <transparent-button class="node-button" @click="remove">
         <font-awesome-icon :icon="['fas', 'x']" style="color: #999; height: 100%"/>
       </transparent-button>
@@ -106,7 +106,7 @@ function clicked() {
 </template>
 
 <style scoped lang="scss">
-#parent {
+#heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
