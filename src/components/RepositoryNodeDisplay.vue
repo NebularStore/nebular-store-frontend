@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {RepositoryNode} from "../types/RepositoryNode.ts";
-import {computed, ref} from "vue";
+import {ref} from "vue";
 import type {RepositoryEntry} from "../types/RepositoryEntry.ts";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {createNewDir, uploadNewFile} from "../utils/repositoryUtils.ts";
@@ -9,6 +9,7 @@ import TransparentButton from "./TransparentButton.vue";
 interface Props {
   node: RepositoryNode,
   initiallyExpanded?: boolean,
+  hideName?: boolean,
 }
 
 const props = defineProps<Props>();
@@ -16,7 +17,6 @@ const props = defineProps<Props>();
 const emit = defineEmits<{
   (e: 'changedContent'): void
 }>()
-const isRoot = computed(() => props.node.parent == undefined);
 const isExpanded = ref(props.initiallyExpanded);
 
 function createDir() {
@@ -76,7 +76,7 @@ function clicked() {
 </script>
 
 <template>
-  <div id="parent" v-if="!isRoot" :style="{'padding-left': 24 * props.node.depth + 'px'}">
+  <div id="parent" v-if="!hideName" :style="{'padding-left': 24 * props.node.depth + 'px'}">
     <div id="leading">
       <font-awesome-icon :icon="['fas', 'file']" style="color: #999; width: 16px" v-if="props.node.is_file"/>
       <transparent-button v-else style="width: 16px" @click="changeExpanded">

@@ -43,7 +43,7 @@ async function loadRoot() {
       </transparent-button>
     </div>
     <div id="repository">
-      <RepositoryNodeDisplay :node="root" :initially-expanded="true"/>
+      <RepositoryNodeDisplay :node="root" :initially-expanded="true" :hide-name="true"/>
     </div>
   </div>
 </template>
