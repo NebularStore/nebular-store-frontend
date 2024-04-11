@@ -3,4 +3,4 @@ WORKDIR /build
 COPY . .
 RUN bun install
 EXPOSE 5173
-CMD ["bun", "--bun", "run", "dev", "--", "--host"]
+CMD ["bun", "run", "dev", "--", "--host"]
