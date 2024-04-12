@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import IconButton from "./TransparentButton.vue";
 import {ref} from "vue";
+import TransparentButton from "./TransparentButton.vue";
 
 const content = ref("");
 
@@ -10,47 +10,28 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div id="search-bar-container">
-    <input type="text" placeholder="Enter search text:" v-model="content">
+  <input type="text" placeholder="Enter search text:" v-model="content">
 
-    <icon-button id="search-button" @click="emit('searched', content)">
-      <font-awesome-icon :icon="['fas', 'magnifying-glass']"
-                         style="color: #999; height: 100%"/>
-    </icon-button>
-  </div>
+  <transparent-button @click="emit('searched', content)">
+    <font-awesome-icon :icon="['fas', 'magnifying-glass']"
+                       style="color: #999; height: 100%"/>
+  </transparent-button>
 </template>
 
 <style scoped lang="scss">
-#search-bar-container {
+input {
   flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 5px;
   height: 100%;
 
-  input {
-    flex: 1;
-    height: 100%;
+  padding: 0 8px;
+  box-sizing: border-box;
+  border-radius: 100vh;
 
-    padding: 0 8px;
-    box-sizing: border-box;
-    border-radius: 100vh;
+  border: 1.5px solid #ccc;
 
-    border: 1.5px solid #ccc;
-
-    &:focus-visible {
-      outline: none;
-      border: 1.5px solid #aaa;
-    }
-  }
-
-  button {
-    height: 100%;
-  }
-
-  #search-button {
-    box-sizing: border-box;
-    padding: 4px;
+  &:focus-visible {
+    outline: none;
+    border: 1.5px solid #aaa;
   }
 }
 </style>

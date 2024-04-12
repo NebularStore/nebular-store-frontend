@@ -39,13 +39,13 @@ function loadRoot() {
     <div id="top-bar">
       <search-bar/>
       <transparent-button @click="createDir">
-        <font-awesome-icon class="searchbar-icon" :icon="['fas', 'folder-plus']" style="height: 100%; color: #999;"/>
+        <font-awesome-icon class="searchbar-icon" :icon="['fas', 'folder-plus']"/>
       </transparent-button>
       <transparent-button @click="uploadFile">
-        <font-awesome-icon class="searchbar-icon" :icon="['fas', 'file-arrow-up']" style="height: 100%; color: #999;"/>
+        <font-awesome-icon class="searchbar-icon" :icon="['fas', 'file-arrow-up']"/>
       </transparent-button>
       <transparent-button @click="loadRoot">
-        <font-awesome-icon class="searchbar-icon" :icon="['fas', 'rotate-right']" style="height: 100%; color: #999"/>
+        <font-awesome-icon class="searchbar-icon" :icon="['fas', 'rotate-right']"/>
       </transparent-button>
     </div>
     <div id="repository">
@@ -71,21 +71,37 @@ function loadRoot() {
 
   #top-bar {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
 
     width: 100%;
     height: 30px;
-
-    .searchbar-icon {
-      box-sizing: border-box;
-      padding: 4px;
-    }
   }
 
   #repository {
     margin: 16px 8px;
 
-    border: 0 solid silver;
-    border-width: 0 0 1px 0px;
+    border: solid silver;
+    border-width: 0 0 1px 0;
+  }
+}
+</style>
+
+<style lang="scss">
+#home {
+  #top-bar {
+    button {
+      height: 100%;
+      padding: 4px 0;
+      box-sizing: border-box;
+
+      svg {
+        height: 100%;
+        aspect-ratio: 1;
+        color: #999;
+      }
+    }
   }
 }
 </style>
